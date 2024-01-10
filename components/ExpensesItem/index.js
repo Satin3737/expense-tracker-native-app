@@ -4,10 +4,10 @@ import {getFormattedDate} from '../../utils/helper';
 import {useNavigation} from '@react-navigation/native';
 import {screensParams} from '../../const';
 
-const ExpensesItem = ({description, amount, date}) => {
+const ExpensesItem = ({id, description, amount, date}) => {
     const navigation = useNavigation();
     const expensePressHandler = () => {
-        navigation.navigate(screensParams.manageScreen.name);
+        navigation.navigate(screensParams.manageScreen.name, {id});
     };
 
     return (
