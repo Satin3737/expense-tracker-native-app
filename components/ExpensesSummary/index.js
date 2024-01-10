@@ -1,12 +1,13 @@
 import {Text, View} from 'react-native';
+import styles from './styles';
 
 const ExpensesSummary = ({period = '', expenses = []}) => {
     const expensesSum = expenses.reduce((sum, expense) => sum + expense.amount, 0).toFixed(2);
 
     return (
-        <View>
-            <Text>{period}</Text>
-            <Text>${expensesSum}</Text>
+        <View style={styles.container}>
+            <Text style={styles.period}>{period}:</Text>
+            <Text style={styles.sum}>${expensesSum}</Text>
         </View>
     );
 };
