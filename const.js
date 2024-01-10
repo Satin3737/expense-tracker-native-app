@@ -15,12 +15,19 @@ export const colors = {
 };
 
 export const screensParams = {
-    all: {
+    allScreen: {
+        name: 'all',
         title: 'All Expenses',
         icon: 'calendar'
     },
-    recent: {
+    recentScreen: {
+        name: 'recent',
         title: 'Recent Expenses',
         icon: 'hourglass'
+    },
+    manageScreen: {
+        name: 'manage',
+        title: 'Manage Expanse',
+        icon: ''
     }
 };

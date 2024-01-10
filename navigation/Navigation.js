@@ -6,28 +6,49 @@ import ManageExpensesScreen from '../screens/ManageExpensesScreen';
 import RecentExpensesScreen from '../screens/RecentExpensesScreen';
 import {Ionicons} from '@expo/vector-icons';
 import {colors, screensParams} from '../const';
+import IconButton from '../components/ui/IconButton';
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
+const {allScreen, recentScreen, manageScreen} = screensParams;
+
+const generalHeadersStyles = {
+    headerStyle: {
+        backgroundColor: colors.primary500,
+        borderColor: colors.white
+    },
+    headerTintColor: colors.white
+};
 
 const ExpensesBottom = () => {
     return (
         <BottomTab.Navigator
-            screenOptions={{
-                headerStyle: {backgroundColor: colors.primary500},
-                headerTintColor: colors.white,
-                tabBarStyle: {backgroundColor: colors.primary500},
-                tabBarActiveTintColor: colors.accent500
-            }}
+            screenOptions={({navigation}) => ({
+                ...generalHeadersStyles,
+                tabBarStyle: {
+                    backgroundColor: colors.primary500,
+                    borderColor: colors.white
+                },
+                tabBarActiveTintColor: colors.white,
+                headerRight: ({tintColor}) => (
+                    <IconButton
+                        icon={'add'}
+                        color={tintColor}
+                        onPress={() => {
+                            navigation.navigate(manageScreen.name);
+                        }}
+                    />
+                )
+            })}
         >
             <BottomTab.Screen
-                name={'all'}
+                name={allScreen.name}
                 component={AllExpensesScreen}
                 options={{
-                    title: screensParams.all.title,
-                    tabBarLabel: screensParams.all.title,
+                    title: allScreen.title,
+                    tabBarLabel: allScreen.title,
                     tabBarIcon: ({color, size}) => (
-                        <Ionicons name={screensParams.all.icon} color={color} size={size} />
+                        <Ionicons name={allScreen.icon} color={color} size={size} />
                     )
                 }}
             />
@@ -35,10 +56,10 @@ const ExpensesBottom = () => {
                 name={'recent'}
                 component={RecentExpensesScreen}
                 options={{
-                    title: screensParams.recent.title,
-                    tabBarLabel: screensParams.recent.title,
+                    title: recentScreen.title,
+                    tabBarLabel: recentScreen.title,
                     tabBarIcon: ({color, size}) => (
-                        <Ionicons name={screensParams.recent.icon} color={color} size={size} />
+                        <Ionicons name={recentScreen.icon} color={color} size={size} />
                     )
                 }}
             />
@@ -49,9 +70,20 @@ const ExpensesBottom = () => {
 const Navigation = () => {
     return (
         <NavigationContainer>
-            <Stack.Navigator>
+            <Stack.Navigator
+                screenOptions={{
+                    ...generalHeadersStyles
+                }}
+            >
                 <Stack.Screen name={'bottom'} component={ExpensesBottom} options={{headerShown: false}} />
-                <Stack.Screen name={'manage'} component={ManageExpensesScreen} />
+                <Stack.Screen
+                    name={manageScreen.name}
+                    component={ManageExpensesScreen}
+                    options={{
+                        title: manageScreen.title,
+                        presentation: 'modal'
+                    }}
+                />
             </Stack.Navigator>
         </NavigationContainer>
     );

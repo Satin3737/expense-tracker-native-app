@@ -4,16 +4,16 @@ import {colors} from '../../const';
 const styles = StyleSheet.create({
     expenseItem: {
         padding: 12,
-        marginVertical: 8,
-        backgroundColor: colors.primary500,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        borderRadius: 8,
+        marginBottom: 8,
         elevation: 4,
         shadowColor: colors.gray500,
         shadowRadius: 4,
         shadowOffset: {width: 2, height: 2},
-        shadowOpacity: 0.4
+        shadowOpacity: 0.4,
+        backgroundColor: colors.primary500,
+        borderRadius: 8
     },
     textBase: {
         color: colors.primary50
@@ -36,6 +36,9 @@ const styles = StyleSheet.create({
     amountItem: {
         fontWeight: 'bold',
         color: colors.primary500
+    },
+    pressed: {
+        opacity: 0.8
     }
 });
 
