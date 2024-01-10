@@ -2,6 +2,10 @@ import {Text, View} from 'react-native';
 import styles from './styles';
 
 const ExpensesSummary = ({period = '', expenses = []}) => {
+    if (expenses.length === 0) {
+        return null;
+    }
+
     const expensesSum = expenses.reduce((sum, expense) => sum + expense.amount, 0).toFixed(2);
 
     return (

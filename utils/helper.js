@@ -7,3 +7,7 @@ export const getFormattedDate = date => {
 
     return format(date);
 };
+
+export const getDateMinusDays = (date, days) => {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate() - days);
+};

@@ -1,13 +1,16 @@
-import {StatusBar} from 'expo-status-bar';
 import {View} from 'react-native';
-import styles from './styles';
+import {StatusBar} from 'expo-status-bar';
+import ExpensesContextProvider from './store/expenses-context';
 import Navigation from './navigation/Navigation';
+import styles from './styles';
 
 const App = () => {
     return (
         <View style={styles.screen}>
             <StatusBar style="light" />
-            <Navigation />
+            <ExpensesContextProvider>
+                <Navigation />
+            </ExpensesContextProvider>
         </View>
     );
 };
