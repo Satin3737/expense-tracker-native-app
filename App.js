@@ -6,7 +6,7 @@ import Navigation from './navigation/Navigation';
 const App = () => {
     return (
         <View style={styles.screen}>
-            <StatusBar style="auto" />
+            <StatusBar style="light" />
             <Navigation />
         </View>
     );
