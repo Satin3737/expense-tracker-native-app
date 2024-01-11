@@ -1,7 +1,12 @@
 import {createContext, useReducer} from 'react';
 import dummyExpenses from '../dummy-data';
 
-export const ExpensesContext = createContext();
+export const ExpensesContext = createContext({
+    expenses: [],
+    addExpense: expenseData => {},
+    deleteExpense: id => {},
+    updateExpense: (id, expenseData) => {}
+});
 
 const ExpensesReducer = (state, action) => {
     const {type, payload} = action;
@@ -29,12 +34,12 @@ const ExpensesContextProvider = ({children}) => {
         dispatch({type: 'ADD', payload: expenseData});
     };
 
-    const updateExpense = id => {
-        dispatch({type: 'UPDATE', payload: id});
+    const deleteExpense = id => {
+        dispatch({type: 'DELETE', payload: id});
     };
 
-    const deleteExpense = (id, expenseData) => {
-        dispatch({type: 'DELETE', payload: {id, expenseData}});
+    const updateExpense = (id, expenseData) => {
+        dispatch({type: 'UPDATE', payload: {id, expenseData}});
     };
 
     const value = {expenses, addExpense, updateExpense, deleteExpense};

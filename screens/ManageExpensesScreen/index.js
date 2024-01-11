@@ -1,11 +1,14 @@
-import {View} from 'react-native';
+import {TextInput, View} from 'react-native';
 import styles from './styles';
-import {useLayoutEffect} from 'react';
+import {useContext, useLayoutEffect} from 'react';
 import IconButton from '../../components/ui/IconButton';
 import {colors} from '../../const';
 import CustomButton, {btnTypes} from '../../components/ui/CustomButton';
+import {ExpensesContext} from '../../store/expenses-context';
 
 const ManageExpensesScreen = ({route, navigation}) => {
+    const {addExpense, updateExpense, deleteExpense} = useContext(ExpensesContext);
+
     const editedId = route.params?.id;
     const isEditing = !!editedId;
 
@@ -14,10 +17,18 @@ const ManageExpensesScreen = ({route, navigation}) => {
     };
 
     const confirmHandler = () => {
+        //placeholder
+        const newData = {
+            description: 'test',
+            amount: 934.11,
+            date: new Date()
+        };
+        isEditing ? updateExpense(editedId, newData) : addExpense(newData);
         navigation.goBack();
     };
 
     const deleteHandler = () => {
+        deleteExpense(editedId);
         navigation.goBack();
     };
 
@@ -29,6 +40,7 @@ const ManageExpensesScreen = ({route, navigation}) => {
 
     return (
         <View style={styles.screen}>
+            <TextInput />
             <View style={styles.buttonsContainer}>
                 <CustomButton label={isEditing ? 'Update' : 'Add'} onPress={confirmHandler} />
                 <CustomButton label={'Cancel'} type={btnTypes.flat} onPress={cancelHandler} />
