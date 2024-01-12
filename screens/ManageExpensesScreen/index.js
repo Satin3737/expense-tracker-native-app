@@ -1,10 +1,11 @@
-import {TextInput, View} from 'react-native';
+import {View} from 'react-native';
 import styles from './styles';
 import {useContext, useLayoutEffect} from 'react';
 import IconButton from '../../components/ui/IconButton';
 import {colors} from '../../const';
 import CustomButton, {btnTypes} from '../../components/ui/CustomButton';
 import {ExpensesContext} from '../../store/expenses-context';
+import ExpensesForm from '../../components/ExpensesForm';
 
 const ManageExpensesScreen = ({route, navigation}) => {
     const {addExpense, updateExpense, deleteExpense} = useContext(ExpensesContext);
@@ -40,7 +41,7 @@ const ManageExpensesScreen = ({route, navigation}) => {
 
     return (
         <View style={styles.screen}>
-            <TextInput />
+            <ExpensesForm />
             <View style={styles.buttonsContainer}>
                 <CustomButton label={isEditing ? 'Update' : 'Add'} onPress={confirmHandler} />
                 <CustomButton label={'Cancel'} type={btnTypes.flat} onPress={cancelHandler} />
