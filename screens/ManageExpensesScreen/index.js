@@ -3,7 +3,6 @@ import styles from './styles';
 import {useContext, useLayoutEffect} from 'react';
 import IconButton from '../../components/ui/IconButton';
 import {colors} from '../../const';
-import CustomButton, {btnTypes} from '../../components/ui/CustomButton';
 import {ExpensesContext} from '../../store/expenses-context';
 import ExpensesForm from '../../components/ExpensesForm';
 
@@ -13,22 +12,16 @@ const ManageExpensesScreen = ({route, navigation}) => {
     const editedId = route.params?.id;
     const isEditing = !!editedId;
 
-    const cancelHandler = () => {
+    const onCancel = () => {
         navigation.goBack();
     };
 
-    const confirmHandler = () => {
-        //placeholder
-        const newData = {
-            description: 'test',
-            amount: 934.11,
-            date: new Date()
-        };
-        isEditing ? updateExpense(editedId, newData) : addExpense(newData);
+    const onSubmit = data => {
+        isEditing ? updateExpense(editedId, data) : addExpense(data);
         navigation.goBack();
     };
 
-    const deleteHandler = () => {
+    const onDelete = () => {
         deleteExpense(editedId);
         navigation.goBack();
     };
@@ -41,14 +34,14 @@ const ManageExpensesScreen = ({route, navigation}) => {
 
     return (
         <View style={styles.screen}>
-            <ExpensesForm />
-            <View style={styles.buttonsContainer}>
-                <CustomButton label={isEditing ? 'Update' : 'Add'} onPress={confirmHandler} />
-                <CustomButton label={'Cancel'} type={btnTypes.flat} onPress={cancelHandler} />
-            </View>
+            <ExpensesForm
+                submitLabel={isEditing ? 'Update' : 'Add'}
+                onSubmit={onSubmit}
+                onCancel={onCancel}
+            />
             {isEditing && (
                 <View style={styles.deleteContainer}>
-                    <IconButton icon={'trash'} color={colors.error500} size={36} onPress={deleteHandler} />
+                    <IconButton icon={'trash'} color={colors.error500} size={36} onPress={onDelete} />
                 </View>
             )}
         </View>

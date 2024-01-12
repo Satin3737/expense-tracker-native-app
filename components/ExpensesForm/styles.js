@@ -3,7 +3,7 @@ import {colors} from '../../const';
 
 const styles = StyleSheet.create({
     form: {
-        marginBottom: 24
+        marginBottom: 4
     },
     title: {
         fontSize: 20,
@@ -19,6 +19,12 @@ const styles = StyleSheet.create({
     },
     input: {
         flex: 1
+    },
+    buttonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        gap: 16,
+        marginTop: 24
     }
 });
 

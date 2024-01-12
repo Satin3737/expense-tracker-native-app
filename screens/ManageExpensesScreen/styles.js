@@ -7,11 +7,6 @@ const styles = StyleSheet.create({
         padding: 16,
         backgroundColor: colors.primary800
     },
-    buttonsContainer: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        gap: 16
-    },
     deleteContainer: {
         marginTop: 16,
         paddingTop: 8,
