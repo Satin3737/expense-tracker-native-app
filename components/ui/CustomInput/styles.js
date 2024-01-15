@@ -10,14 +10,21 @@ const styles = StyleSheet.create({
         color: colors.primary100,
         marginBottom: 4
     },
-    input: {
-        backgroundColor: colors.primary100,
+    error: {
+        fontSize: 12,
+        marginTop: 2,
+        color: colors.error500
+    },
+    input: isValid => ({
+        backgroundColor: isValid ? colors.primary100 : colors.error50,
+        borderColor: isValid ? 'transparent' : colors.error500,
+        borderWidth: 1,
         paddingVertical: 4,
         paddingHorizontal: 8,
         borderRadius: 8,
         fontSize: 16,
         color: colors.primary700
-    },
+    }),
     inputMultiline: {
         minHeight: 100,
         textAlignVertical: 'top'

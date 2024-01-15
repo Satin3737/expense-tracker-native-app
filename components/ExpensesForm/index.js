@@ -3,24 +3,51 @@ import styles from './styles';
 import CustomInput from '../ui/CustomInput';
 import {useState} from 'react';
 import CustomButton, {btnTypes} from '../ui/CustomButton';
+import {getIsoDate} from '../../utils/helper';
 
-const ExpensesForm = ({submitLabel, onSubmit, onCancel}) => {
-    const [formData, setFormData] = useState({
-        amount: '',
-        date: '',
-        description: ''
+const ExpensesForm = ({submitLabel, onSubmit, onCancel, currentExpense}) => {
+    const [formState, setFormState] = useState({
+        amount: {
+            value: currentExpense ? currentExpense?.amount.toString() : '',
+            isValid: true
+        },
+        date: {
+            value: currentExpense ? getIsoDate(currentExpense?.date) : '',
+            isValid: true
+        },
+        description: {
+            value: currentExpense ? currentExpense?.description : '',
+            isValid: true
+        }
     });
 
     const formSubmit = () => {
         const data = {
-            amount: +formData.amount,
-            date: new Date(formData.date),
-            description: formData.description
+            amount: +formState.amount.value,
+            date: new Date(formState.date.value),
+            description: formState.description.value
         };
+
+        const amountIsValid = !isNaN(data.amount) && data.amount > 0;
+        const dateIsValid = data.date.toString() !== 'Invalid Date';
+        const descriptionIsValid = data.description.trim().length > 0;
+
+        if (!amountIsValid || !dateIsValid || !descriptionIsValid) {
+            setFormState(state => {
+                return {
+                    amount: {...state.amount, isValid: amountIsValid},
+                    date: {...state.date, isValid: dateIsValid},
+                    description: {...state.description, isValid: descriptionIsValid}
+                };
+            });
+
+            return;
+        }
+
         onSubmit(data);
     };
 
-    const onInput = (input, val) => setFormData(state => ({...state, [input]: val}));
+    const onInput = (input, value) => setFormState(state => ({...state, [input]: {value, isValid: true}}));
 
     return (
         <View style={styles.form}>
@@ -28,31 +55,37 @@ const ExpensesForm = ({submitLabel, onSubmit, onCancel}) => {
             <View style={styles.row}>
                 <CustomInput
                     label={'Amount'}
+                    validateMessage={'Please enter valid amount!'}
+                    isValid={formState.amount.isValid}
                     wrapperStyles={[styles.input]}
                     textInputConfig={{
                         keyboardType: 'decimal-pad',
-                        onChangeText: val => onInput('amount', val),
-                        value: formData.amount
+                        onChangeText: value => onInput('amount', value),
+                        value: formState.amount.value
                     }}
                 />
                 <CustomInput
                     label={'Date'}
+                    validateMessage={'Please enter valid date!'}
+                    isValid={formState.date.isValid}
                     wrapperStyles={[styles.input]}
                     textInputConfig={{
                         keyboardType: 'decimal-pad',
                         placeholder: 'YYYY-MM-DD',
                         maxLength: 10,
-                        onChangeText: val => onInput('date', val),
-                        value: formData.date
+                        onChangeText: value => onInput('date', value),
+                        value: formState.date.value
                     }}
                 />
             </View>
             <CustomInput
+                validateMessage={'Please enter valid description!'}
+                isValid={formState.description.isValid}
                 label={'Description'}
                 textInputConfig={{
                     multiline: true,
-                    onChangeText: val => onInput('description', val),
-                    value: formData.description
+                    onChangeText: value => onInput('description', value),
+                    value: formState.description.value
                 }}
             />
             <View style={styles.buttonsContainer}>

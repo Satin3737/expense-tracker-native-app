@@ -7,10 +7,10 @@ import {ExpensesContext} from '../../store/expenses-context';
 import ExpensesForm from '../../components/ExpensesForm';
 
 const ManageExpensesScreen = ({route, navigation}) => {
-    const {addExpense, updateExpense, deleteExpense} = useContext(ExpensesContext);
-
+    const {addExpense, updateExpense, deleteExpense, expenses} = useContext(ExpensesContext);
     const editedId = route.params?.id;
     const isEditing = !!editedId;
+    const currentExpense = expenses.find(expense => expense.id === editedId);
 
     const onCancel = () => {
         navigation.goBack();
@@ -38,6 +38,7 @@ const ManageExpensesScreen = ({route, navigation}) => {
                 submitLabel={isEditing ? 'Update' : 'Add'}
                 onSubmit={onSubmit}
                 onCancel={onCancel}
+                currentExpense={currentExpense}
             />
             {isEditing && (
                 <View style={styles.deleteContainer}>
