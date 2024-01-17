@@ -1,7 +1,7 @@
 import {FlatList} from 'react-native';
+import ExpensesEmptyList from '../ExpensesEmptyList';
 import ExpensesItem from '../ExpensesItem';
 import styles from './styles';
-import ExpensesEmptyList from '../ExpensesEmptyList';
 
 const ExpensesList = ({expenses = []}) => {
     return (

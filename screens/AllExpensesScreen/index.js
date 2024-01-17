@@ -1,11 +1,17 @@
+import {useContext, useEffect} from 'react';
 import {View} from 'react-native';
 import ExpensesOutput from '../../components/ExpensesOutput';
-import styles from './styles';
 import {ExpensesContext} from '../../store/expenses-context';
-import {useContext} from 'react';
+import {getExpense} from '../../utils/http';
+import styles from './styles';
 
 const AllExpensesScreen = () => {
-    const {expenses} = useContext(ExpensesContext);
+    const {expenses, setExpense} = useContext(ExpensesContext);
+    const fetchExpenses = async () => setExpense(await getExpense());
+
+    useEffect(() => {
+        fetchExpenses();
+    }, []);
 
     return (
         <View style={styles.screen}>

@@ -1,6 +1,6 @@
 import {Pressable, Text, View} from 'react-native';
-import styles from './styles';
 import {colors} from '../../../const';
+import styles from './styles';
 
 export const btnTypes = {
     regular: 'regular',

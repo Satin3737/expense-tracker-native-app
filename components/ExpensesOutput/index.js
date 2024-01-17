@@ -1,6 +1,6 @@
 import {View} from 'react-native';
-import ExpensesSummary from '../ExpensesSummary';
 import ExpensesList from '../ExpensesList';
+import ExpensesSummary from '../ExpensesSummary';
 import styles from './styles';
 
 const ExpensesOutput = ({expenses = [], period = ''}) => {

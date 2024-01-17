@@ -1,12 +1,12 @@
+import {Ionicons} from '@expo/vector-icons';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import IconButton from '../components/ui/IconButton';
+import {colors, screensParams} from '../const';
 import AllExpensesScreen from '../screens/AllExpensesScreen';
 import ManageExpensesScreen from '../screens/ManageExpensesScreen';
 import RecentExpensesScreen from '../screens/RecentExpensesScreen';
-import {Ionicons} from '@expo/vector-icons';
-import {colors, screensParams} from '../const';
-import IconButton from '../components/ui/IconButton';
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();

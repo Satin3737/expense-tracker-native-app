@@ -1,10 +1,11 @@
-import {View} from 'react-native';
-import styles from './styles';
 import {useContext, useLayoutEffect} from 'react';
+import {View} from 'react-native';
+import ExpensesForm from '../../components/ExpensesForm';
 import IconButton from '../../components/ui/IconButton';
 import {colors} from '../../const';
 import {ExpensesContext} from '../../store/expenses-context';
-import ExpensesForm from '../../components/ExpensesForm';
+import {postExpense} from '../../utils/http';
+import styles from './styles';
 
 const ManageExpensesScreen = ({route, navigation}) => {
     const {addExpense, updateExpense, deleteExpense, expenses} = useContext(ExpensesContext);
@@ -16,8 +17,13 @@ const ManageExpensesScreen = ({route, navigation}) => {
         navigation.goBack();
     };
 
-    const onSubmit = data => {
-        isEditing ? updateExpense(editedId, data) : addExpense(data);
+    const onSubmit = async data => {
+        if (isEditing) {
+            updateExpense(editedId, data);
+        } else {
+            const id = await postExpense(data);
+            addExpense({...data, id});
+        }
         navigation.goBack();
     };
 

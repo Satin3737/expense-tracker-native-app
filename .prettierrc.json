@@ -6,5 +6,8 @@
     "printWidth": 110,
     "trailingComma": "none",
     "bracketSpacing": false,
-    "arrowParens": "avoid"
+    "arrowParens": "avoid",
+    "importOrder": ["^components/(.*)$", "^[./]"],
+    "importOrderSortSpecifiers": true,
+    "plugins": ["@trivago/prettier-plugin-sort-imports"]
 }

@@ -1,9 +1,9 @@
-import {Text, View} from 'react-native';
-import styles from './styles';
-import CustomInput from '../ui/CustomInput';
 import {useState} from 'react';
-import CustomButton, {btnTypes} from '../ui/CustomButton';
+import {Text, View} from 'react-native';
 import {getIsoDate} from '../../utils/helper';
+import CustomButton, {btnTypes} from '../ui/CustomButton';
+import CustomInput from '../ui/CustomInput';
+import styles from './styles';
 
 const ExpensesForm = ({submitLabel, onSubmit, onCancel, currentExpense}) => {
     const [formState, setFormState] = useState({
