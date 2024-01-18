@@ -1,13 +1,16 @@
 import {useContext, useEffect} from 'react';
 import {View} from 'react-native';
 import ExpensesOutput from '../../components/ExpensesOutput';
+import LoaderOverlay from '../../components/ui/LoaderOverlay';
+import ExpensesService from '../../services/ExpensesService';
 import {ExpensesContext} from '../../store/expenses-context';
-import {getExpense} from '../../utils/http';
 import styles from './styles';
 
 const AllExpensesScreen = () => {
+    const {getApiExpense} = ExpensesService();
     const {expenses, setExpense} = useContext(ExpensesContext);
-    const fetchExpenses = async () => setExpense(await getExpense());
+    const {data, loading} = expenses;
+    const fetchExpenses = async () => setExpense(await getApiExpense());
 
     useEffect(() => {
         fetchExpenses();
@@ -15,7 +18,8 @@ const AllExpensesScreen = () => {
 
     return (
         <View style={styles.screen}>
-            <ExpensesOutput expenses={expenses} period={'Total'} />
+            {loading && <LoaderOverlay />}
+            <ExpensesOutput expenses={data} period={'Total'} />
         </View>
     );
 };

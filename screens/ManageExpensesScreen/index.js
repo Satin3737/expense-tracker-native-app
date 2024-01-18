@@ -2,16 +2,19 @@ import {useContext, useLayoutEffect} from 'react';
 import {View} from 'react-native';
 import ExpensesForm from '../../components/ExpensesForm';
 import IconButton from '../../components/ui/IconButton';
+import LoaderOverlay from '../../components/ui/LoaderOverlay';
 import {colors} from '../../const';
+import ExpensesService from '../../services/ExpensesService';
 import {ExpensesContext} from '../../store/expenses-context';
-import {postExpense} from '../../utils/http';
 import styles from './styles';
 
 const ManageExpensesScreen = ({route, navigation}) => {
+    const {addApiExpense, deleteApiExpense, updateApiExpense} = ExpensesService();
     const {addExpense, updateExpense, deleteExpense, expenses} = useContext(ExpensesContext);
+    const {data, loading} = expenses;
     const editedId = route.params?.id;
     const isEditing = !!editedId;
-    const currentExpense = expenses.find(expense => expense.id === editedId);
+    const currentExpense = data.find(expense => expense.id === editedId);
 
     const onCancel = () => {
         navigation.goBack();
@@ -19,15 +22,17 @@ const ManageExpensesScreen = ({route, navigation}) => {
 
     const onSubmit = async data => {
         if (isEditing) {
+            await updateApiExpense(editedId, data);
             updateExpense(editedId, data);
         } else {
-            const id = await postExpense(data);
+            const id = await addApiExpense(data);
             addExpense({...data, id});
         }
         navigation.goBack();
     };
 
-    const onDelete = () => {
+    const onDelete = async () => {
+        await deleteApiExpense(editedId);
         deleteExpense(editedId);
         navigation.goBack();
     };
@@ -40,6 +45,7 @@ const ManageExpensesScreen = ({route, navigation}) => {
 
     return (
         <View style={styles.screen}>
+            {loading && <LoaderOverlay fill={false} />}
             <ExpensesForm
                 submitLabel={isEditing ? 'Update' : 'Add'}
                 onSubmit={onSubmit}

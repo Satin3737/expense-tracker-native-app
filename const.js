@@ -11,7 +11,8 @@ export const colors = {
     error500: '#9b095c',
     gray500: '#39324a',
     gray700: '#221c30',
-    white: '#ffffff'
+    white: '#ffffff',
+    overlay: '#20036480'
 };
 
 export const screensParams = {

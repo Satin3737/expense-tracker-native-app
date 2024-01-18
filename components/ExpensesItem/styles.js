@@ -13,10 +13,15 @@ const styles = StyleSheet.create({
         shadowOffset: {width: 2, height: 2},
         shadowOpacity: 0.4,
         backgroundColor: colors.primary500,
-        borderRadius: 8
+        borderRadius: 8,
+        gap: 16,
+        alignItems: 'center'
     },
     textBase: {
         color: colors.primary50
+    },
+    infoContainer: {
+        flexShrink: 1
     },
     description: {
         fontSize: 16,
@@ -31,7 +36,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         textAlign: 'center',
         borderRadius: 4,
-        minWidth: 80
+        minWidth: 80,
+        minHeight: 40
     },
     amountItem: {
         fontWeight: 'bold',

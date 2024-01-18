@@ -1,7 +1,7 @@
 import {createContext, useReducer} from 'react';
 
 export const ExpensesContext = createContext({
-    expenses: [],
+    expenses: {loading: false, data: []},
     setExpense: expenseData => {},
     addExpense: expenseData => {},
     deleteExpense: id => {},
@@ -13,23 +13,29 @@ const ExpensesReducer = (state, action) => {
 
     switch (type) {
         case 'SET':
-            return payload.reverse();
+            return {...state, data: payload.reverse()};
         case 'ADD':
-            return [payload, ...state];
+            return {...state, data: [payload, ...state.data]};
         case 'UPDATE':
-            const newExpensesArr = [...state];
-            const index = state.findIndex(expense => expense.id === payload.id);
+            const newExpensesArr = [...state.data];
+            const index = state.data.findIndex(expense => expense.id === payload.id);
             newExpensesArr[index] = {...newExpensesArr[index], ...payload.expenseData};
-            return newExpensesArr;
+            return {...state, data: newExpensesArr};
         case 'DELETE':
-            return state.filter(expense => expense.id !== payload);
+            return {...state, data: state.data.filter(expense => expense.id !== payload)};
+        case 'LOADING':
+            return {...state, loading: payload};
         default:
             return state;
     }
 };
 
 const ExpensesContextProvider = ({children}) => {
-    const [expenses, dispatch] = useReducer(ExpensesReducer, []);
+    const [expenses, dispatch] = useReducer(ExpensesReducer, {loading: false, data: []});
+
+    const toggleLoading = loadingState => {
+        dispatch({type: 'LOADING', payload: loadingState});
+    };
 
     const setExpense = expenseData => {
         dispatch({type: 'SET', payload: expenseData});
@@ -47,7 +53,7 @@ const ExpensesContextProvider = ({children}) => {
         dispatch({type: 'UPDATE', payload: {id, expenseData}});
     };
 
-    const value = {expenses, setExpense, addExpense, updateExpense, deleteExpense};
+    const value = {expenses, setExpense, addExpense, updateExpense, deleteExpense, toggleLoading};
 
     return <ExpensesContext.Provider value={value}>{children}</ExpensesContext.Provider>;
 };

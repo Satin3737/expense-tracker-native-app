@@ -15,7 +15,7 @@ const ExpensesItem = ({id, description, amount, date}) => {
             style={({pressed}) => [styles.expenseItem, pressed && styles.pressed]}
             onPress={expensePressHandler}
         >
-            <View>
+            <View style={styles.infoContainer}>
                 <Text style={[styles.textBase, styles.description]}>{description}</Text>
                 <Text style={styles.textBase}>{getFormattedDate(date)}</Text>
             </View>
