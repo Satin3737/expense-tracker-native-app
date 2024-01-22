@@ -3,6 +3,7 @@ import {View} from 'react-native';
 import ExpensesForm from '../../components/ExpensesForm';
 import IconButton from '../../components/ui/IconButton';
 import LoaderOverlay from '../../components/ui/LoaderOverlay';
+import ErrorOverlay from '../../components/ui/errorOverlay';
 import {colors} from '../../const';
 import ExpensesService from '../../services/ExpensesService';
 import {ExpensesContext} from '../../store/expenses-context';
@@ -11,7 +12,7 @@ import styles from './styles';
 const ManageExpensesScreen = ({route, navigation}) => {
     const {addApiExpense, deleteApiExpense, updateApiExpense} = ExpensesService();
     const {addExpense, updateExpense, deleteExpense, expenses} = useContext(ExpensesContext);
-    const {data, loading} = expenses;
+    const {data, loading, error} = expenses;
     const editedId = route.params?.id;
     const isEditing = !!editedId;
     const currentExpense = data.find(expense => expense.id === editedId);
@@ -45,6 +46,7 @@ const ManageExpensesScreen = ({route, navigation}) => {
 
     return (
         <View style={styles.screen}>
+            {error && <ErrorOverlay />}
             {loading && <LoaderOverlay fill={false} />}
             <ExpensesForm
                 submitLabel={isEditing ? 'Update' : 'Add'}

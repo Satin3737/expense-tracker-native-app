@@ -1,11 +1,13 @@
 import {createContext, useReducer} from 'react';
 
 export const ExpensesContext = createContext({
-    expenses: {loading: false, data: []},
+    expenses: {data: [], loading: false, error: false},
     setExpense: expenseData => {},
     addExpense: expenseData => {},
     deleteExpense: id => {},
-    updateExpense: (id, expenseData) => {}
+    updateExpense: (id, expenseData) => {},
+    toggleLoading: loadingState => {},
+    toggleError: errorState => {}
 });
 
 const ExpensesReducer = (state, action) => {
@@ -25,13 +27,23 @@ const ExpensesReducer = (state, action) => {
             return {...state, data: state.data.filter(expense => expense.id !== payload)};
         case 'LOADING':
             return {...state, loading: payload};
+        case 'ERROR':
+            return {...state, error: payload};
         default:
             return state;
     }
 };
 
 const ExpensesContextProvider = ({children}) => {
-    const [expenses, dispatch] = useReducer(ExpensesReducer, {loading: false, data: []});
+    const [expenses, dispatch] = useReducer(ExpensesReducer, {
+        data: [],
+        loading: false,
+        error: false
+    });
+
+    const toggleError = errorState => {
+        dispatch({type: 'ERROR', payload: errorState});
+    };
 
     const toggleLoading = loadingState => {
         dispatch({type: 'LOADING', payload: loadingState});
@@ -53,7 +65,15 @@ const ExpensesContextProvider = ({children}) => {
         dispatch({type: 'UPDATE', payload: {id, expenseData}});
     };
 
-    const value = {expenses, setExpense, addExpense, updateExpense, deleteExpense, toggleLoading};
+    const value = {
+        expenses,
+        setExpense,
+        addExpense,
+        updateExpense,
+        deleteExpense,
+        toggleLoading,
+        toggleError
+    };
 
     return <ExpensesContext.Provider value={value}>{children}</ExpensesContext.Provider>;
 };
