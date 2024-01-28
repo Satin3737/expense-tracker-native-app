@@ -1,18 +1,18 @@
 import {useState} from 'react';
 import {Text, View} from 'react-native';
-import {getIsoDate} from '../../utils/helper';
 import CustomButton, {btnTypes} from '../ui/CustomButton';
+import CustomDatePicker from '../ui/CustomDatePicker';
 import CustomInput from '../ui/CustomInput';
 import styles from './styles';
 
 const ExpensesForm = ({submitLabel, onSubmit, onCancel, currentExpense}) => {
+    const [showDatePicker, setShowDatePicker] = useState(false);
     const [formState, setFormState] = useState({
+        date: {
+            value: currentExpense ? currentExpense?.date : new Date()
+        },
         amount: {
             value: currentExpense ? currentExpense?.amount.toString() : '',
-            isValid: true
-        },
-        date: {
-            value: currentExpense ? getIsoDate(currentExpense?.date) : '',
             isValid: true
         },
         description: {
@@ -24,19 +24,18 @@ const ExpensesForm = ({submitLabel, onSubmit, onCancel, currentExpense}) => {
     const formSubmit = () => {
         const data = {
             amount: +formState.amount.value,
-            date: new Date(formState.date.value),
+            date: formState.date.value,
             description: formState.description.value
         };
 
         const amountIsValid = !isNaN(data.amount) && data.amount > 0;
-        const dateIsValid = data.date.toString() !== 'Invalid Date';
         const descriptionIsValid = data.description.trim().length > 0;
 
-        if (!amountIsValid || !dateIsValid || !descriptionIsValid) {
+        if (!amountIsValid || !descriptionIsValid) {
             setFormState(state => {
                 return {
                     amount: {...state.amount, isValid: amountIsValid},
-                    date: {...state.date, isValid: dateIsValid},
+                    date: {...state.date},
                     description: {...state.description, isValid: descriptionIsValid}
                 };
             });
@@ -45,6 +44,11 @@ const ExpensesForm = ({submitLabel, onSubmit, onCancel, currentExpense}) => {
         }
 
         onSubmit(data);
+    };
+
+    const onDateChange = (e, value) => {
+        setShowDatePicker(false);
+        setFormState(state => ({...state, date: {value}}));
     };
 
     const onInput = (input, value) => setFormState(state => ({...state, [input]: {value, isValid: true}}));
@@ -64,18 +68,12 @@ const ExpensesForm = ({submitLabel, onSubmit, onCancel, currentExpense}) => {
                         value: formState.amount.value
                     }}
                 />
-                <CustomInput
+                <CustomDatePicker
                     label={'Date'}
-                    validateMessage={'Please enter valid date!'}
-                    isValid={formState.date.isValid}
-                    wrapperStyles={[styles.input]}
-                    textInputConfig={{
-                        keyboardType: 'decimal-pad',
-                        placeholder: 'YYYY-MM-DD',
-                        maxLength: 10,
-                        onChangeText: value => onInput('date', value),
-                        value: formState.date.value
-                    }}
+                    value={formState.date.value}
+                    onChange={onDateChange}
+                    showDatePicker={showDatePicker}
+                    setShowDatePicker={() => setShowDatePicker(true)}
                 />
             </View>
             <CustomInput
